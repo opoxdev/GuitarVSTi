@@ -1,0 +1,1 @@
+Third-party dependencies such as JUCE are fetched via CMake FetchContent when `GUITARNEXUS_ENABLE_JUCE` is enabled. The `third_party/juce` directory can host a submodule if desired for offline builds.
