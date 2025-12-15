@@ -69,3 +69,9 @@ void GuitarNexusAudioProcessor::processBlock(GnAudioBuffer& buffer, GnMidiBuffer
         }
     }
 }
+
+#if defined(GN_USE_JUCE)
+juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() {
+    return new GuitarNexusAudioProcessor();
+}
+#endif
