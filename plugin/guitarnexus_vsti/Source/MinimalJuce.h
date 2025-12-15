@@ -91,12 +91,51 @@ public:
     virtual void processBlock(AudioBuffer& buffer, MidiBuffer& midiMessages) = 0;
 };
 
-class Component { };
+class Component {
+public:
+    virtual ~Component() = default;
+    void setBounds(int, int, int w, int h) { width = w; height = h; }
+    void setSize(int w, int h) { width = w; height = h; }
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
+    void addAndMakeVisible(Component*) {}
+    void repaint() {}
+
+protected:
+    int width{0};
+    int height{0};
+};
 class AudioProcessorEditor : public Component {
 public:
     explicit AudioProcessorEditor(AudioProcessor&) {}
     virtual ~AudioProcessorEditor() = default;
 };
+
+class Colour {
+public:
+    explicit Colour(std::uint32_t argb = 0u) : value(argb) {}
+    std::uint32_t getARGB() const { return value; }
+
+private:
+    std::uint32_t value;
+};
+
+namespace Colours {
+static const Colour darkslategrey{0xFF2F4F4F};
+static const Colour darkgrey{0xFF303030};
+static const Colour white{0xFFFFFFFF};
+} // namespace Colours
+
+class Graphics {
+public:
+    void fillAll(Colour) {}
+    void setColour(Colour) {}
+    void drawText(const std::string&, int, int, int, int, int) {}
+};
+
+namespace Justification {
+enum { centred = 0 };
+}
 
 } // namespace juce
 

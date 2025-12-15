@@ -10,6 +10,11 @@ public:
     explicit PresetBrowserComponent(gnpreset::PresetDatabase& db);
     std::vector<std::string> listPresetNames() const;
 
+#if defined(GN_USE_JUCE)
+    void paint(juce::Graphics& g) override;
+    void resized() override;
+#endif
+
 private:
     gnpreset::PresetDatabase& database;
 };
