@@ -10,6 +10,7 @@ set(STUB_SOURCES Source/MinimalJuce.cpp)
 if(GUITARNEXUS_ENABLE_JUCE)
     juce_add_plugin(guitarnexus_vsti
         COMPANY_NAME "GuitarNexus"
+        VERSION "${PROJECT_VERSION}"
         IS_SYNTH TRUE
         NEEDS_MIDI_INPUT TRUE
         IS_MIDI_EFFECT FALSE
