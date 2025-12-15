@@ -7,11 +7,18 @@
 #include <array>
 #include <vector>
 
+#if defined(GN_USE_JUCE)
+using GnAudioBuffer = juce::AudioBuffer<float>;
+#else
+using GnAudioBuffer = juce::AudioBuffer;
+#endif
+using GnMidiBuffer = juce::MidiBuffer;
+
 class GuitarNexusAudioProcessor : public juce::AudioProcessor {
 public:
     GuitarNexusAudioProcessor();
     void prepareToPlay(double sampleRate, int samplesPerBlock) override;
-    void processBlock(juce::AudioBuffer& buffer, juce::MidiBuffer& midiMessages) override;
+    void processBlock(GnAudioBuffer& buffer, GnMidiBuffer& midiMessages) override;
     gnpreset::PresetDatabase& getPresetDatabase() { return presetDb; }
 
 private:

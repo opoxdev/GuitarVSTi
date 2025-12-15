@@ -5,6 +5,13 @@
 #include <cstdint>
 #include <array>
 
+#if defined(GN_USE_JUCE)
+ #include <juce_audio_basics/juce_audio_basics.h>
+ #include <juce_audio_processors/juce_audio_processors.h>
+ #include <juce_audio_utils/juce_audio_utils.h>
+ #include <juce_gui_basics/juce_gui_basics.h>
+#else
+
 namespace juce {
 
 class AudioBuffer {
@@ -61,3 +68,5 @@ public:
 };
 
 } // namespace juce
+
+#endif

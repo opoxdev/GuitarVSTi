@@ -14,7 +14,7 @@ void GuitarNexusAudioProcessor::prepareToPlay(double sr, int samplesPerBlock) {
     currentSnapshot = presetDb.makeSnapshot(0);
 }
 
-void GuitarNexusAudioProcessor::processBlock(juce::AudioBuffer& buffer, juce::MidiBuffer& midiMessages) {
+void GuitarNexusAudioProcessor::processBlock(GnAudioBuffer& buffer, GnMidiBuffer& midiMessages) {
     const int numSamples = buffer.getNumSamples();
     for (int ch = 0; ch < buffer.getNumChannels(); ++ch) {
         std::fill(buffer.getWritePointer(ch), buffer.getWritePointer(ch) + numSamples, 0.0f);
