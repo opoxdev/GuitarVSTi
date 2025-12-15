@@ -1,7 +1,14 @@
 #include "PluginProcessor.h"
+#include "PluginEditor.h"
 #include <algorithm>
+#include <cmath>
 
+#if defined(GN_USE_JUCE)
+GuitarNexusAudioProcessor::GuitarNexusAudioProcessor()
+    : juce::AudioProcessor(juce::AudioProcessor::BusesProperties().withOutput("Output", juce::AudioChannelSet::stereo(), true)) {}
+#else
 GuitarNexusAudioProcessor::GuitarNexusAudioProcessor() = default;
+#endif
 
 void GuitarNexusAudioProcessor::prepareToPlay(double sr, int samplesPerBlock) {
     sampleRate = sr;
@@ -71,6 +78,26 @@ void GuitarNexusAudioProcessor::processBlock(GnAudioBuffer& buffer, GnMidiBuffer
 }
 
 #if defined(GN_USE_JUCE)
+const juce::String GuitarNexusAudioProcessor::getName() const { return "GuitarNexus"; }
+bool GuitarNexusAudioProcessor::acceptsMidi() const { return true; }
+bool GuitarNexusAudioProcessor::producesMidi() const { return false; }
+bool GuitarNexusAudioProcessor::isMidiEffect() const { return false; }
+double GuitarNexusAudioProcessor::getTailLengthSeconds() const { return 0.0; }
+int GuitarNexusAudioProcessor::getNumPrograms() { return 1; }
+int GuitarNexusAudioProcessor::getCurrentProgram() { return 0; }
+void GuitarNexusAudioProcessor::setCurrentProgram(int) {}
+const juce::String GuitarNexusAudioProcessor::getProgramName(int) { return "Default"; }
+void GuitarNexusAudioProcessor::changeProgramName(int, const juce::String&) {}
+void GuitarNexusAudioProcessor::releaseResources() {}
+bool GuitarNexusAudioProcessor::hasEditor() const { return true; }
+juce::AudioProcessorEditor* GuitarNexusAudioProcessor::createEditor() { return new GuitarNexusAudioProcessorEditor(*this); }
+void GuitarNexusAudioProcessor::getStateInformation(juce::MemoryBlock& destData) { destData.setSize(0); }
+void GuitarNexusAudioProcessor::setStateInformation(const void*, int) {}
+bool GuitarNexusAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const {
+    auto mainOut = layouts.getMainOutputChannelSet();
+    return mainOut == juce::AudioChannelSet::mono() || mainOut == juce::AudioChannelSet::stereo();
+}
+
 juce::AudioProcessor* JUCE_CALLTYPE createPluginFilter() {
     return new GuitarNexusAudioProcessor();
 }

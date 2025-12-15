@@ -14,6 +14,36 @@
 
 namespace juce {
 
+class String {
+public:
+    String() = default;
+    String(const char* c) : value(c) {}
+    String(const std::string& s) : value(s) {}
+    operator std::string() const { return value; }
+    const std::string& toStdString() const { return value; }
+
+private:
+    std::string value;
+};
+
+class MemoryBlock {
+public:
+    void setSize(std::size_t newSize, bool initialiseToZero = false) {
+        data.resize(newSize, initialiseToZero ? 0u : 0u);
+    }
+
+    void append(const void* srcData, std::size_t numBytes) {
+        const auto* bytes = static_cast<const std::uint8_t*>(srcData);
+        data.insert(data.end(), bytes, bytes + numBytes);
+    }
+
+    [[nodiscard]] const void* getData() const { return data.data(); }
+    [[nodiscard]] std::size_t getSize() const { return data.size(); }
+
+private:
+    std::vector<std::uint8_t> data;
+};
+
 class AudioBuffer {
 public:
     AudioBuffer(int channels, int samples)
@@ -64,6 +94,7 @@ public:
 class Component { };
 class AudioProcessorEditor : public Component {
 public:
+    explicit AudioProcessorEditor(AudioProcessor&) {}
     virtual ~AudioProcessorEditor() = default;
 };
 

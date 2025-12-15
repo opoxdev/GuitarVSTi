@@ -23,7 +23,7 @@ if(GUITARNEXUS_ENABLE_JUCE)
     target_link_libraries(guitarnexus_vsti
         PRIVATE guitarnexus_coredsp guitarnexus_performance guitarnexus_presetengine
                 juce::juce_audio_utils juce::juce_audio_plugin_client juce::juce_dsp)
-    target_compile_definitions(guitarnexus_vsti PRIVATE GN_USE_JUCE=1 JUCE_DISPLAY_SPLASH_SCREEN=0)
+    target_compile_definitions(guitarnexus_vsti PRIVATE GN_USE_JUCE=1 JUCE_DISPLAY_SPLASH_SCREEN=0 JUCE_VST3_CAN_REPLACE_VST2=0)
 else()
     add_library(guitarnexus_vsti SHARED ${PLUGIN_SOURCES} ${STUB_SOURCES})
 
