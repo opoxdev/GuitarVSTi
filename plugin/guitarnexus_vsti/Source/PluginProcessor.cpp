@@ -21,11 +21,21 @@ void GuitarNexusAudioProcessor::processBlock(GnAudioBuffer& buffer, GnMidiBuffer
     }
 
     std::array<gnperf::PlayEvent, gnperf::PerformanceEngine::kMaxEvents> events{};
+#if defined(GN_USE_JUCE)
+    for (const auto metadata : midiMessages) {
+        const auto msg = metadata.getMessage();
+        if (msg.isNoteOn()) {
+            const int samplePos = static_cast<int>(metadata.samplePosition);
+            performance.enqueueMidiNote(msg.getNoteNumber(), msg.getVelocity(), samplePos);
+        }
+    }
+#else
     for (const auto& midi : midiMessages) {
         if (midi.message.isNoteOn()) {
             performance.enqueueMidiNote(midi.message.getNoteNumber(), midi.message.getVelocity(), midi.samplePosition);
         }
     }
+#endif
 
     size_t count = performance.popEvents(events);
     for (size_t i = 0; i < count; ++i) {
