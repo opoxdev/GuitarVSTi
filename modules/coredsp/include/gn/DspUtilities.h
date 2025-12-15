@@ -7,6 +7,9 @@
 
 namespace gn {
 
+constexpr float kPi = 3.14159265358979323846f;
+constexpr float kTwoPi = 2.0f * kPi;
+
 inline bool isDenormal(float v) {
     constexpr float tiny = 1.0e-30f;
     return std::abs(v) < tiny;
@@ -37,7 +40,7 @@ public:
     }
 
     void setCutoff(float cutoff, float sampleRate) {
-        const float x = std::exp(-2.0f * static_cast<float>(M_PI) * cutoff / sampleRate);
+        const float x = std::exp(-2.0f * kPi * cutoff / sampleRate);
         a1 = -x;
         b0 = (1.0f + a1) * 0.5f;
         b1 = -b0;
@@ -84,7 +87,7 @@ struct Biquad {
 
 inline Biquad designPeak(float sampleRate, float freq, float q, float gainDb) {
     const float A = std::pow(10.0f, gainDb / 40.0f);
-    const float omega = 2.0f * static_cast<float>(M_PI) * freq / sampleRate;
+    const float omega = kTwoPi * freq / sampleRate;
     const float alpha = std::sin(omega) / (2.0f * q);
     const float cosw = std::cos(omega);
 
@@ -105,7 +108,7 @@ inline Biquad designPeak(float sampleRate, float freq, float q, float gainDb) {
 }
 
 inline Biquad designLowpass(float sampleRate, float freq, float q) {
-    const float omega = 2.0f * static_cast<float>(M_PI) * freq / sampleRate;
+    const float omega = kTwoPi * freq / sampleRate;
     const float alpha = std::sin(omega) / (2.0f * q);
     const float cosw = std::cos(omega);
     const float a0 = 1.0f + alpha;
@@ -120,7 +123,7 @@ inline Biquad designLowpass(float sampleRate, float freq, float q) {
 }
 
 inline Biquad designHighpass(float sampleRate, float freq, float q) {
-    const float omega = 2.0f * static_cast<float>(M_PI) * freq / sampleRate;
+    const float omega = kTwoPi * freq / sampleRate;
     const float alpha = std::sin(omega) / (2.0f * q);
     const float cosw = std::cos(omega);
     const float a0 = 1.0f + alpha;
