@@ -4,6 +4,7 @@
 namespace gn {
 
 void CoreVoice::prepare(double sampleRate, int maxDelay) {
+    this->sampleRate = sampleRate;
     string.prepare(sampleRate, maxDelay);
     exciter.prepare(sampleRate);
     body.prepare(sampleRate, 4);
@@ -31,6 +32,21 @@ void CoreVoice::start(float frequency, float velocity, const VoiceParams& params
     active = true;
 }
 
+void CoreVoice::legatoSlide(float frequency, float velocity, int slideSamples) {
+    if (!active) {
+        start(frequency, velocity, VoiceParams{});
+        return;
+    }
+    string.setFrequency(frequency);
+    const float timeMs = std::max(2.0f, 1000.0f * static_cast<float>(slideSamples) / static_cast<float>(sampleRate));
+    outputGain.setTime(timeMs, static_cast<float>(sampleRate));
+    outputGain.setTarget(std::clamp(velocity, 0.0f, 1.0f));
+}
+
+void CoreVoice::stop() {
+    outputGain.setTarget(0.0f);
+}
+
 void CoreVoice::render(float* buffer, int numSamples) {
     if (!active) return;
     std::fill(buffer, buffer + numSamples, 0.0f);
@@ -42,6 +58,9 @@ void CoreVoice::render(float* buffer, int numSamples) {
         sample = dc.process(sample);
         sample = softClip(sample * outputGain.process());
         buffer[i] = preventDenorm(sample);
+    }
+    if (outputGain.getCurrent() < 1.0e-4f) {
+        active = false;
     }
 }
 

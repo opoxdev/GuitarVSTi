@@ -16,7 +16,9 @@ struct PlayEvent {
     float velocity{0.0f};
     Articulation articulation{Articulation::Sustain};
     int slideTarget{-1};
+    int slideTimeSamples{0};
     float muteAmount{0.0f};
+    float noiseAmount{0.0f};
 };
 
 } // namespace gnperf

@@ -5,6 +5,7 @@ add_library(guitarnexus_coredsp STATIC
     src/BodyResonator.cpp
     src/CoreVoice.cpp
     src/DspUtilities.cpp
+    src/NoiseLayer.cpp
 )
 
 target_include_directories(guitarnexus_coredsp PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

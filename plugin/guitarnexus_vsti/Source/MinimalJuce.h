@@ -65,6 +65,9 @@ public:
     int getNoteNumber() const { return note; }
     float getVelocity() const { return velocity; }
     bool isNoteOn() const { return isOn; }
+    bool isNoteOff() const { return !isOn; }
+    float getFloatVelocity() const { return velocity; }
+    int getChannel() const { return channel; }
 
 private:
     int note{0};

@@ -19,6 +19,8 @@ class CoreVoice {
 public:
     void prepare(double sampleRate, int maxDelay);
     void start(float frequency, float velocity, const VoiceParams& params);
+    void legatoSlide(float frequency, float velocity, int slideSamples);
+    void stop();
     void render(float* buffer, int numSamples);
     bool isActive() const { return active; }
 
@@ -30,6 +32,7 @@ private:
     DcBlocker dc;
     SmoothValue outputGain;
     bool active{false};
+    double sampleRate{48000.0};
 };
 
 } // namespace gn
