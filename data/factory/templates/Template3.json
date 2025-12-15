@@ -1,0 +1,5 @@
+{
+  "name": "Template 3",
+  "tags": ["template"],
+  "parameters": {"toneHp": 80, "toneLp": 7900, "presenceDb": 3, "noise": 0.3}
+}
